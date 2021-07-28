@@ -1,0 +1,130 @@
+public class CustomerItems {
+ 
+    private static final Map<String, Customer> customerMap = new HashMap<String, Customer>();
+ 
+    static {
+        init();
+    }
+ 
+    private static void init() {
+        Customer customer1 = new Employee("CUS1301", "Rachel", "Individual");
+        Customer customer2 = new Employee("CUS1302", "Laura", "Corporate");
+        Customer customer3 = new Employee("CUS1303", "Victor", "Broker");
+ 
+        customerMap.put(customer1.getCustomerRef(), customer1);
+        customerMap.put(customer2.getCustomerRef(), customer2);
+        customerMap.put(customer3.getCustomerRef(), customer3);
+    }
+ 
+    public static Customer getCustomer(String customerRef) {
+        return customerMap.get(customerRef);
+    }
+ 
+    public static Customer addCustomer(Customer newCustomer) {
+        customerMap.put(newCustomer.getCustomerRef(), newCustomer);
+        return newCustomer;
+    }
+ 
+    public static Customer updateCustomer(Employee updCustomer) {
+        customerMap.put(updCustomer.getCustomerRef(), updCustomer);
+        return updCustomer;
+    }
+ 
+    public static void deleteCustomer(String customerRef) {
+        customerMap.remove(customerRef);
+    }
+ 
+    public static List<Customer> getAllCustomers() {
+        Collection<Customer> c = customerMap.values();
+        List<Customer> list = new ArrayList<Customer>();
+        list.addAll(c);
+        return list;
+    }
+     
+    List<Customer> list;
+ 
+}
+
+
+
+
+public class Customer {
+ 
+    private String customerRef;
+    private String customerName;
+    private String customerSector;
+ 
+    public Customer() {}
+ 
+    public Customer(String customerRef, String customerName, String customerSector) {
+        this.customerRef = customerRef;
+        this.customerName = customerName;
+        this.customerSector = customerSector;
+    }
+ 
+    public String getCustomerRef() {
+        return customerRef;
+    }
+ 
+    public void setCustomerRef(String customerRef) {
+        this.customerRef = customerRef;
+    }
+ 
+    public String getCustomerName() {
+        return customerName;
+    }
+ 
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+ 
+    public String getCustomerSector() {
+        return customerSector;
+    }
+ 
+    public void setCustomerSector(String customerSector) {
+        this.customerSector = customerSector;
+    }
+ 
+}
+
+
+
+
+
+@Path("/customer")
+public class BankAdminLogin {
+ 
+    // Sample uri - /contextPath/servletPath/customer
+    @GET
+    public List<Customer> getCustomer() {
+        List<Customer> listOfCustomer = CustomerItems.getAllCustomers();
+        return listOfCountries;
+    }
+ 
+    // Sample uri - /contextPath/servletPath/customer/{customerId}
+    @GET
+    @Path("/{customerId}")
+    public Customer getCustomer(@PathParam("customerId") String customerId) {
+        return CustomerItems.getCustomer(customerId);
+    }
+ 
+    // Sample uri - /contextPath/servletPath/customer
+    @POST
+    public Customer addCustomer(Customer custEntry) {
+        return CustomerItems.addCustomer(custEntry);
+    }
+ 
+    // Sample uri - /contextPath/servletPath/customer
+    @PUT
+    public Customer updateCustomer(Customer custEntry) {
+        return CustomerItems.updateCustomer(custEntry);
+    }
+ 
+    @DELETE
+    @Path("/{customerId}")
+    public void deleteCustomer(@PathParam("customerId") String customerId) {
+        CustomerItems.deleteCustomer(customerId);
+    }
+ 
+}
